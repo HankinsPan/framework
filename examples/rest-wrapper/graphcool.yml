@@ -1,0 +1,5 @@
+service: rest-wrapper
+
+datamodel: database/datamodel.graphql
+
+secret: mysecret123
