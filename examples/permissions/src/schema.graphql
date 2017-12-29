@@ -4,11 +4,11 @@ type Query {
   # all authenticated users can retrieve about themselves
   me: User
 
-  # # only admins can retrieve info about given users
-  user(id: ID!)
+  # all authenticated users can retrieve a list of posts
+  posts: [Post!]!
 
-  # # all authenticated users can retrieve a list of posts
-  # posts: [Post!]!
+  # only admins can retrieve info about given users
+  user(id: ID!): User
 }
 
 type Mutation {
@@ -22,14 +22,14 @@ type Mutation {
   # if `userId` is set, the user trying to update the password needs to be an admin
   updatePassword(oldPassword: String!, newPassword: String!, userId: ID): User!
   
-  # # all authenticated users can create posts
+  # all authenticated users can create posts
   createPost(title: String!): Post!
 
-  # # only the author of a post or an admins can update it
-  # updatePost(id: ID!, title: String!): Post
+  # only the author of a post or an admins can update it
+  updatePost(id: ID!, title: String!): Post
 
-  # # only the author of a post or an admin can delete it
-  # deletePost(id: ID!): Post
+  # only the author of a post or an admin can delete it
+  deletePost(id: ID!): Post
 }
 
 type AuthPayload {

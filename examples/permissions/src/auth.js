@@ -20,7 +20,10 @@ async function signup(parent, args, ctx, info) {
   const password = await bcrypt.hash(args.password, 10)
   const role = args.admin ? 'ADMIN' : 'CUSTOMER'
 
-  delete args.admin
+  args = {
+    email: args.email,
+    password: args.password
+  }
   const user = await ctx.db.mutation.createUser({
     data: { ...args, role, password },
   })
@@ -56,13 +59,10 @@ async function updatePassword(
   ctx,
   info,
 ) {
-  console.log(`updatePassword`, oldPassword, newPassword, userId)
   if (!userId) {
     // a user updates her own password
     const user = await ctx.db.query.user({ where: { id: getUserId(ctx) } })
-    console.log(`update user: `, JSON.stringify(user))
     const oldPasswordValid = await bcrypt.compare(oldPassword, user.password)
-    console.log(`oldPasswordValid: `, oldPasswordValid)
     if (!oldPasswordValid) {
       throw new Error(
         'Old password was wrong, please try again or contact an admin to reset your password',
@@ -95,26 +95,7 @@ async function updatePassword(
     } catch (e) {
       return e
     }
-    console.log(`return user: `, JSON.stringify(user))
     return user
-  }
-
-// async function updatePasswordForUser(id, newPassword) {
-//   const newPasswordHash = await bcrypt.hash(newPassword, 10)
-//   await ctx.db.mutation.updateUser({
-//     where: { id: userId },
-//     data: { password: newPasswordHash },
-//   })
-// }
-
-  const user = await ctx.db.query.user({ where: { id } })
-
-  const userExistsAndIsAdmin = ctx.db.exists.user({
-    where: { id, role: 'ADMIN' },
-  })
-  console.log(`userExistsAndIsAdmin: `, userExistsAndIsAdmin)
-  if (userExistsAndIsAdmin) {
-  } else {
   }
 }
 
