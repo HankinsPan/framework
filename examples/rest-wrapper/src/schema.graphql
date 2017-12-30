@@ -1,10 +1,38 @@
-# import Post from "../database/schema.generated.graphql"
-
 type Query {
-  feed: [Post!]!
+  subBreedImages(breedName: String!, subBreedName: String!): [SubBreedImagesPayload!]!
+  randomSubBreedImage(breedName: String!, subBreedName: String!): RandomSubBreedImagePayload!
+  randomDogImage: RandomDogImagePayload!
+  randomBreedImage(breedName: String!): RandomBreedImagePayload!
+  breedImages(breedName: String!): [BreedImagesPayload!]!
+  allSubBreeds(breedName: String!): [AllSubBreedsPayload!]!
+  allBreeds: [AllBreedsPayload!]!
 }
 
-type Mutation {
-  createDraft(title: String!, text: String): Post
-  publish(id: ID!): Post
+type SubBreedImagesPayload {
+  url: String!
+}
+
+type RandomSubBreedImagePayload {
+  url: String!
+}
+
+type RandomDogImagePayload {
+  url: String!
+}
+
+type RandomBreedImagePayload {
+  url: String!
+}
+
+type BreedImagesPayload {
+  url: String!
+}
+
+type AllSubBreedsPayload {
+  name: String!
+}
+
+type AllBreedsPayload {
+  name: String!
+  subBreeds: [String!]!
 }
